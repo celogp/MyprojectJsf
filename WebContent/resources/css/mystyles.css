@@ -1,0 +1,9 @@
+@charset "ISO-8859-1";
+
+.hidden>div {
+	display:none;
+}
+
+.visible>div {
+	display:block;
+}

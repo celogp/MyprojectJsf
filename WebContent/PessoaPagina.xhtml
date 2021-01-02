@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Pessoa</title>
+	<h:outputScript name="utils.js" library="js"></h:outputScript>
+	<h:outputStylesheet name="mystyles.css" library="css" />
+	<h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+</h:head>
+
+<h:body>
+	<p:growl id="growl" life="2000" />
+
+	<p:toolbar>
+		<f:facet name="left">Pessoas</f:facet>
+
+		<f:facet name="right">
+			<p:inputSwitch update="growl" onLabel="Formulário" offLabel="Grade">
+				<p:ajax oncomplete="showGrid()" />
+			</p:inputSwitch>
+
+		</f:facet>
+	</p:toolbar>
+
+	<div class="showForm">
+		<div>
+			<p:panel id="basic">
+				<h:form id="idCrudPessoa">
+					<div class="p-field" style="display: none">
+						<p:outputLabel value="ID" />
+						<br />
+						<p:inputText id="id" value="#{pessoaBean.pessoa.id}" />
+
+						<br />
+					</div>
+
+					<div class="p-field">
+						<p:outputLabel value="Name" />
+						<br />
+						<p:inputText id="Nome" value="#{pessoaBean.pessoa.nome}" />
+						<br />
+					</div>
+
+					<div class="p-field">
+						<p:outputLabel value="SobreName" />
+						<br />
+						<p:inputText id="SobreNome" value="#{pessoaBean.pessoa.sobreNome}" />
+						<br />
+					</div>
+
+					<br />
+					<p:commandButton value="Adicionar"
+						action="#{pessoaBean.doAdicionar()}"
+						update="idCrudPessoa, listaPessoa, growl" />
+
+					<p:commandButton value="Salvar" action="#{pessoaBean.doSalvar()}"
+						update="idCrudPessoa, listaPessoa, growl" />
+
+
+				</h:form>
+			</p:panel>
+		</div>
+	</div>
+
+	<div class="showGrid hidden">
+		<div>
+			<p:dataTable id="listaPessoa" var="item"
+				value="#{pessoaBean.listaPessoa}" paginator="true" rows="10"
+				emptyMessage="Não há registros na lista"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,20,50,100">
+
+				<p:column headerText="ID" style="width: 10%;" sortBy="#{item.id}">
+					<p:commandButton value="#{item.id}" style="width: 100%;"
+						action="#{pessoaBean.doSelectPessoa(item)}" update="idCrudPessoa">
+						<p:ajax oncomplete="showGrid()" />
+					</p:commandButton>
+				</p:column>
+				
+				<p:column headerText="Nome" style="width: 25%;"
+					sortBy="#{item.nome}">
+					<h:outputText value="#{item.nome}" />
+				</p:column>
+
+				<p:column headerText="Sobre Nome" style="width: 25%;"
+					sortBy="#{item.sobreNome}">
+					<h:outputText value="#{item.sobreNome}" />
+				</p:column>
+
+				<p:column headerText="Apagar" style="width: 10%;">
+					<p:commandButton value="Apagar" style="width: 100%;"
+						action="#{pessoaBean.doApagar(item)}" update="listaPessoa">
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</div>
+	</div>
+	<!--end div_text_container-->
+</h:body>
+
+
+</html>
